@@ -103,8 +103,8 @@ def depthFirstSearch(problem):
         if not node in closed:
              closed.append(node)
 
-                for pmv, moves, cost in problem.getSuccessors(node):
-                        edge.push((pmv, path + [moves], sum + [cost]))
+                for pmv, moves, cst in problem.getSuccessors(node):
+                        edge.push((pmv, path + [moves], sum + [cst]))
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
@@ -129,7 +129,25 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    "*** util.raiseNotDefined()***"
+
+     edge = PriorityQueue()
+     stream = (problem.getStartState(), [])
+     edge.push(stream, 0)
+     closed = []
+     count = Counter()
+
+     while not edge.isEmpty():
+         node, path = edge.pop()
+         if problem.isGoalState(node):
+             return path
+
+         if not node in closed:
+             closed.append(node)
+             for pmv, moves, cst in problem.getSuccessors(node):
+                 count[pmv] = count[node]
+                 count[pmv] += cst
+                 edge.push((pmv, path + [moves]), count[pmv])
 
 def nullHeuristic(state, problem=None):
     """
@@ -141,7 +159,27 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    "***util.raiseNotDefined()***"
+
+     edge = PriorityQueue()
+     stream = (problem.getStartState(), [])
+     count = Counter()
+     count[str(stream[0])] += heuristic(stream[0], problem)
+     edge.push(stream count[str(stream[0])])
+     closed = []
+
+     while not edge.isEmpty():
+         node, path = edge.pop()
+         if problem.isGoalState(node):
+             return path
+
+         if not node in closed:
+             closed.append(node)
+             for pmv, moves, cst in problem.getSuccessors(node):
+                 nextpath = path + [moves]
+                 count[str(pmv)] = problem.getCostOfActions(nextpath)
+                 count[str(pmv)] += heuristic(pmv, problem)
+                 edge.push((pmv, nextpath), count[str(pmv)])
 
 
 # Abbreviations
