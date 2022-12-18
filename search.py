@@ -89,7 +89,22 @@ def depthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
    "*** util.raiseNotDefined() ***"
 
+    edge = Stack()
+    stream = (problem.getStartState(), [], [])
+    edge.push(stream)
+    closed = []
 
+    while not edge.isEmpty():
+        node, path, sum = edge.pop()
+
+        if problem.isGoalState(node):
+            return path
+
+        if not node in closed:
+             closed.append(node)
+
+                for pmv, moves, cost in problem.getSuccessors(node):
+                        edge.push((pmv, path + [moves], sum + [cost]))
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
